@@ -17,4 +17,5 @@ export interface LocationService {
   getAllSubLocations(): Promise<SubLocation[]>;
 
   getSubLocationById(id: number): Promise<SubLocation | null>;
+  getSubLocations(id:number): Promise<SubLocation[] | []>
 }

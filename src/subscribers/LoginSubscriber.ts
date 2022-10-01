@@ -1,11 +1,15 @@
 import bcrypt from "bcrypt";
+import signale from "signale";
 import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import { RoleName } from "../enums/UserRoleEnums";
 import { Login } from "../models/Login";
+import { UserRole } from "../models/UserRole";
+import { UserRoleRepository } from "../repositories/UserRoleRepository";
 
 @EventSubscriber()
 export class LoginSubscriber implements EntitySubscriberInterface<Login> {
@@ -26,5 +30,10 @@ export class LoginSubscriber implements EntitySubscriberInterface<Login> {
     event.entity.password = hashedPassword;
 
     event.entity.id = uuidv4();
+
+    const userRole = await UserRoleRepository.findOneBy({name: RoleName.CLIENT})
+    signale.log(userRole)
+
+    event.entity.role = event.entity.role === null ? userRole as UserRole : event.entity.role as UserRole
   }
 }

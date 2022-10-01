@@ -43,10 +43,10 @@ export class AuthServiceImpl implements AuthService {
 
     const tokenId = uuidv4();
 
-    const accessToken = JwtUtils.generateAccessToken(user.user);
+    const accessToken = JwtUtils.generateAccessToken(user?.user as User);
     const refreshToken = JwtUtils.generateRefreshToken({
       tokenId,
-      user: user.user,
+      user: user?.user as User,
     });
 
     // Save token to database
@@ -66,19 +66,17 @@ export class AuthServiceImpl implements AuthService {
 
     if (!subLocation) throw new BadRequestError("Sublocation does not exist!");
 
-    const user = UserRepository.create({ ..._user });
+    const savedLogin = await LoginRepository.save({email, password})
 
-    const userToSave = LoginRepository.create({
-      email,
-      password,
-      user,
-    });
+    // const user = UserRepository.create({ ..._user });
 
-    const savedUser = await this.loginRepo.save(userToSave);
+    const savedUser = await UserRepository.save({login: savedLogin, subLocation, ..._user})
 
-    console.log("Saved User: ", savedUser.user);
 
-    return savedUser.user;
+
+    console.log("Saved User: ", savedUser);
+
+    return savedUser;
   }
 
   public refreshToken(token: string) {

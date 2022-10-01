@@ -5,6 +5,7 @@ import {
   Strategy as JwtStrategy,
   StrategyOptions,
 } from "passport-jwt";
+import { User } from "../models/User";
 import { UserRepository } from "../repositories/UserRepository";
 import { VerifiedCallback } from "./../../node_modules/@types/passport-jwt/index.d";
 
@@ -64,9 +65,9 @@ function passportJwtStrategyFactory({
     secretOrKey: process.env.ACCESS_TOKEN_SECRET,
   };
 
-  const verify: VerifiedCallback = async (payload, done) => {
+  const verify: VerifiedCallback = async (payload, done: any) => {
     try {
-      const user = await userRepo.findOneBy({ id: payload.id });
+      const user = await userRepo.findOneBy({ id: payload?.id });
 
       if (user) {
         done(null, { tokenPayload: payload });

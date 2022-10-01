@@ -16,7 +16,7 @@ export class UserRole extends BaseEntity {
   @Column({
     type: "enum",
     enum: RoleName,
-    default: RoleName.CLIENT,
+    // default: RoleName.CLIENT,
     name: "user_role_name",
   })
   name!: RoleName;
@@ -24,3 +24,4 @@ export class UserRole extends BaseEntity {
   @OneToMany((type) => Login, (login) => login.role)
   logins!: Login[];
 }
+

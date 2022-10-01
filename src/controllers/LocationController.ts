@@ -60,4 +60,11 @@ export class LocationController {
 
     return subLocation;
   }
+
+  @Get("getSubLocations/:locationId")
+  public async getSubLocations(@Param("locationId") locationId: string) {
+    const subLocations = await this.locationService.getSubLocations(
+      +locationId
+    )
+  }
 }

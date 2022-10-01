@@ -28,7 +28,7 @@ export class User extends BaseEntity {
   @IsString()
   otherNames!: string;
 
-  @OneToOne(() => Login)
+  @OneToOne(() => Login, { cascade: true })
   @JoinColumn({ name: "user_login_id" })
   login?: Login;
 

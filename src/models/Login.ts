@@ -24,10 +24,10 @@ export class Login extends BaseEntity {
   @Column("text", { name: "login_password" })
   password!: string;
 
-  @OneToOne(() => User, { cascade: true })
-  user!: User;
+  @OneToOne(() => User)
+  user?: User;
 
-  @ManyToOne(() => UserRole, (userRole) => userRole.logins)
+  @ManyToOne(() => UserRole, (userRole) => userRole.logins, {cascade: true})
   @JoinColumn({ name: "login_role_id" })
   role?: UserRole;
 }
